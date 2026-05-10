@@ -34,7 +34,7 @@ public class FreelancerConfiguration : IEntityTypeConfiguration<Freelancer>
                     new { FreelancerId = 4, Street = "Street4", City = "City4", Country = "Country4" },
                     new { FreelancerId = 5, Street = "Street5", City = "City5", Country = "Country5" },
                     new { FreelancerId = 6, Street = "Street6", City = "City6", Country = "Country6" }
-);
+                );
             });
 
         builder.HasMany(f => f.Skills)
@@ -42,69 +42,7 @@ public class FreelancerConfiguration : IEntityTypeConfiguration<Freelancer>
                .UsingEntity<FreelancerSkill>(
                 r => r.HasOne(fs => fs.Skill).WithMany(s => s.FreelancerSkills).HasForeignKey(fs => fs.SkillId),
                 l => l.HasOne(fs => fs.Freelancer).WithMany(f => f.FreelancerSkills).HasForeignKey(fs => fs.FreelancerId)
-               );
-
-//         builder.HasData(LoadFreelancers());
-//     }
-//     private object[] LoadFreelancers()
-//     {
-//         return
-//         [
-//             new             // Independent Freelancer
-//             {
-//                 Id = 1,
-//                 Name = "Name1",
-//                 Type = "Type1",
-//                 HourlyRate = 50,
-//                 Availability = Availability.Full_Time,
-//                 Freelancer = "INDEPENDENT"
-//             },
-//             new             // Agency Freelancer
-//             {
-//                 Id = 2,
-//                 Name = "Name2",
-//                 Type = "Type2",
-//                 AgencyName = "AgencyName2",
-//                 AgencyContactEmail = "Email2",
-//                 Freelancer = "AGENCY"
-//             },
-//             new             // Agency Freelancer
-//             {
-//                 Id = 3,
-//                 Name = "Name3",
-//                 Type = "Type3",
-//                 AgencyName = "AgencyName3",
-//                 AgencyContactEmail = "Email3",
-//                 Freelancer = "AGENCY"
-//             },
-//             new             // Independent Freelancer
-//             {
-//                 Id = 4,
-//                 Name = "Name4",
-//                 Type = "Type4",
-//                 HourlyRate = 60,
-//                 Availability = Availability.Part_Time,
-//                 Freelancer = "INDEPENDENT"
-//             },
-//             new             // Agency Freelancer
-//             {
-//                 Id = 5,
-//                 Name = "Name5",
-//                 Type = "Type5",
-//                 AgencyName = "AgencyName5",
-//                 AgencyContactEmail = "Email5",
-//                 Freelancer = "AGENCY"
-//             },
-//             new             // Independent Freelancer
-//             {
-//                 Id = 6,
-//                 Name = "Name6",
-//                 Type = "Type6",
-//                 HourlyRate = 70,
-//                 Availability = Availability.Full_Time,
-//                 Freelancer = "INDEPENDENT"
-//             }
-//         ];
+            );
     }
 }
 
