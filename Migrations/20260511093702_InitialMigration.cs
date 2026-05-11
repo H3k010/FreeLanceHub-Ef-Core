@@ -18,6 +18,27 @@ namespace EfcCodeFirst.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "AgencyFreelancers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "VARCHAR(255)", maxLength: 255, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"),
+                    Agency_Name = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: true),
+                    Agency_Contact_Email = table.Column<string>(type: "VARCHAR(100)", maxLength: 100, nullable: true),
+                    Address_Street = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false),
+                    Address_City = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false),
+                    Address_Country = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AgencyFreelancers", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Clients",
                 columns: table => new
                 {
@@ -38,27 +59,23 @@ namespace EfcCodeFirst.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Freelancers",
+                name: "IndpendentFreelancers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "VARCHAR(255)", maxLength: 255, nullable: false),
-                    Type = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"),
+                    HourlyRate = table.Column<int>(type: "int", nullable: false),
+                    Availability = table.Column<string>(type: "VARCHAR(30)", maxLength: 30, nullable: false),
                     Address_Street = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false),
                     Address_City = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false),
-                    Address_Country = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    Freelancer = table.Column<string>(type: "VARCHAR(30)", maxLength: 30, nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"),
-                    Agency_Name = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: true),
-                    Agency_Contact_Email = table.Column<string>(type: "VARCHAR(100)", maxLength: 100, nullable: true),
-                    HourlyRate = table.Column<int>(type: "int", nullable: true),
-                    Availability = table.Column<string>(type: "VARCHAR(30)", maxLength: 30, nullable: true)
+                    Address_Country = table.Column<string>(type: "VARCHAR(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Freelancers", x => x.Id);
+                    table.PrimaryKey("PK_IndpendentFreelancers", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -117,12 +134,6 @@ namespace EfcCodeFirst.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FreelancerSkills", x => new { x.FreelancerId, x.SkillId });
-                    table.ForeignKey(
-                        name: "FK_FreelancerSkills_Freelancers_FreelancerId",
-                        column: x => x.FreelancerId,
-                        principalTable: "Freelancers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FreelancerSkills_Skills_SkillId",
                         column: x => x.SkillId,
@@ -199,12 +210,6 @@ namespace EfcCodeFirst.Migrations
                 {
                     table.PrimaryKey("PK_ProjectFreelancer", x => new { x.ProjectId, x.FreelancerId });
                     table.ForeignKey(
-                        name: "FK_ProjectFreelancer_Freelancers_FreelancerId",
-                        column: x => x.FreelancerId,
-                        principalTable: "Freelancers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_ProjectFreelancer_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
@@ -212,6 +217,16 @@ namespace EfcCodeFirst.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "AgencyFreelancers",
+                columns: new[] { "Id", "Agency_Contact_Email", "Agency_Name", "Name", "Address_City", "Address_Country", "Address_Street" },
+                values: new object[,]
+                {
+                    { 2, "Email2", "AgencyName2", "Name2", "City2", "Country2", "Street2" },
+                    { 3, "Email3", "AgencyName3", "Name3", "City3", "Country3", "Street3" },
+                    { 5, "Email5", "AgencyName5", "Name5", "City5", "Country5", "Street5" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Clients",
@@ -226,33 +241,14 @@ namespace EfcCodeFirst.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Freelancers",
-                columns: new[] { "Id", "Address_City", "Address_Country", "Address_Street", "Availability", "Freelancer", "HourlyRate", "Name", "Type" },
-                values: new object[] { 1, "City1", "Country1", "Street1", "Full_Time", "INDEPENDENT", 50, "Name1", "Type1" });
-
-            migrationBuilder.InsertData(
-                table: "Freelancers",
-                columns: new[] { "Id", "Agency_Contact_Email", "Agency_Name", "Freelancer", "Name", "Type", "Address_City", "Address_Country", "Address_Street" },
+                table: "IndpendentFreelancers",
+                columns: new[] { "Id", "Availability", "HourlyRate", "Name", "Address_City", "Address_Country", "Address_Street" },
                 values: new object[,]
                 {
-                    { 2, "Email2", "AgencyName2", "AGENCY", "Name2", "Type2", "City2", "Country2", "Street2" },
-                    { 3, "Email3", "AgencyName3", "AGENCY", "Name3", "Type3", "City3", "Country3", "Street3" }
+                    { 1, "Full_Time", 50, "Name1", "City1", "Country1", "Street1" },
+                    { 4, "Part_Time", 60, "Name4", "City4", "Country4", "Street4" },
+                    { 6, "Full_Time", 70, "Name6", "City6", "Country6", "Street6" }
                 });
-
-            migrationBuilder.InsertData(
-                table: "Freelancers",
-                columns: new[] { "Id", "Address_City", "Address_Country", "Address_Street", "Availability", "Freelancer", "HourlyRate", "Name", "Type" },
-                values: new object[] { 4, "City4", "Country4", "Street4", "Part_Time", "INDEPENDENT", 60, "Name4", "Type4" });
-
-            migrationBuilder.InsertData(
-                table: "Freelancers",
-                columns: new[] { "Id", "Agency_Contact_Email", "Agency_Name", "Freelancer", "Name", "Type", "Address_City", "Address_Country", "Address_Street" },
-                values: new object[] { 5, "Email5", "AgencyName5", "AGENCY", "Name5", "Type5", "City5", "Country5", "Street5" });
-
-            migrationBuilder.InsertData(
-                table: "Freelancers",
-                columns: new[] { "Id", "Address_City", "Address_Country", "Address_Street", "Availability", "Freelancer", "HourlyRate", "Name", "Type" },
-                values: new object[] { 6, "City6", "Country6", "Street6", "Full_Time", "INDEPENDENT", 70, "Name6", "Type6" });
 
             migrationBuilder.InsertData(
                 table: "Skills",
@@ -376,10 +372,16 @@ namespace EfcCodeFirst.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AgencyFreelancers");
+
+            migrationBuilder.DropTable(
                 name: "Contracts");
 
             migrationBuilder.DropTable(
                 name: "FreelancerSkills");
+
+            migrationBuilder.DropTable(
+                name: "IndpendentFreelancers");
 
             migrationBuilder.DropTable(
                 name: "Invoices");
@@ -389,9 +391,6 @@ namespace EfcCodeFirst.Migrations
 
             migrationBuilder.DropTable(
                 name: "Skills");
-
-            migrationBuilder.DropTable(
-                name: "Freelancers");
 
             migrationBuilder.DropTable(
                 name: "Projects");

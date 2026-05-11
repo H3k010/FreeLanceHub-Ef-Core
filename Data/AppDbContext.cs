@@ -15,7 +15,6 @@ public class AppDbContext : DbContext
     public DbSet<Project> Projects { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<Contract> Contracts { get; set; }
-    public DbSet<Freelancer> Freelancers { get; set; }
     public DbSet<IndependentFreelancer> IndependentFreelancers { get; set; }
     public DbSet<AgencyFreelancer> AgencyFreelancers { get; set; }
     public DbSet<Skill> Skills { get; set; }

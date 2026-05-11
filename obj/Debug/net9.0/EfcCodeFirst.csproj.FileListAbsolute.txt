@@ -142,3 +142,4 @@
 /home/nulloperator42/Desktop/VSCProjects/EfcCodeFirst/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /home/nulloperator42/Desktop/VSCProjects/EfcCodeFirst/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 /home/nulloperator42/Desktop/VSCProjects/EfcCodeFirst/bin/Debug/net9.0/appsettings.json
+/home/nulloperator42/Desktop/VSCProjects/EfcCodeFirst/obj/Debug/net9.0/EfcCodeFirst.sourcelink.json

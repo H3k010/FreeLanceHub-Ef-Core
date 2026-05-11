@@ -157,19 +157,9 @@ namespace EfcCodeFirst.Migrations
                         .HasColumnType("timestamp")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<string>("Freelancer")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("VARCHAR");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(50)
                         .HasColumnType("VARCHAR");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -179,11 +169,9 @@ namespace EfcCodeFirst.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Freelancers", (string)null);
+                    b.ToTable((string)null);
 
-                    b.HasDiscriminator<string>("Freelancer").HasValue("Freelancer");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTpcMappingStrategy();
                 });
 
             modelBuilder.Entity("EfcCodeFirst.Entites.FreelancerSkill", b =>
@@ -601,14 +589,13 @@ namespace EfcCodeFirst.Migrations
                         .HasColumnType("VARCHAR")
                         .HasColumnName("Agency_Name");
 
-                    b.HasDiscriminator().HasValue("AGENCY");
+                    b.ToTable("AgencyFreelancers", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 2,
                             Name = "Name2",
-                            Type = "Type2",
                             AgencyContactEmail = "Email2",
                             AgencyName = "AgencyName2"
                         },
@@ -616,7 +603,6 @@ namespace EfcCodeFirst.Migrations
                         {
                             Id = 3,
                             Name = "Name3",
-                            Type = "Type3",
                             AgencyContactEmail = "Email3",
                             AgencyName = "AgencyName3"
                         },
@@ -624,7 +610,6 @@ namespace EfcCodeFirst.Migrations
                         {
                             Id = 5,
                             Name = "Name5",
-                            Type = "Type5",
                             AgencyContactEmail = "Email5",
                             AgencyName = "AgencyName5"
                         });
@@ -642,14 +627,13 @@ namespace EfcCodeFirst.Migrations
                     b.Property<int>("HourlyRate")
                         .HasColumnType("int");
 
-                    b.HasDiscriminator().HasValue("INDEPENDENT");
+                    b.ToTable("IndpendentFreelancers", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             Name = "Name1",
-                            Type = "Type1",
                             Availability = "Full_Time",
                             HourlyRate = 50
                         },
@@ -657,7 +641,6 @@ namespace EfcCodeFirst.Migrations
                         {
                             Id = 4,
                             Name = "Name4",
-                            Type = "Type4",
                             Availability = "Part_Time",
                             HourlyRate = 60
                         },
@@ -665,7 +648,6 @@ namespace EfcCodeFirst.Migrations
                         {
                             Id = 6,
                             Name = "Name6",
-                            Type = "Type6",
                             Availability = "Full_Time",
                             HourlyRate = 70
                         });
@@ -809,84 +791,6 @@ namespace EfcCodeFirst.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EfcCodeFirst.Entites.Freelancer", b =>
-                {
-                    b.OwnsOne("EfcCodeFirst.Entites.ValueObjects.Address", "Address", b1 =>
-                        {
-                            b1.Property<int>("FreelancerId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("VARCHAR");
-
-                            b1.Property<string>("Country")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("VARCHAR");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("VARCHAR");
-
-                            b1.HasKey("FreelancerId");
-
-                            b1.ToTable("Freelancers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("FreelancerId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    FreelancerId = 1,
-                                    City = "City1",
-                                    Country = "Country1",
-                                    Street = "Street1"
-                                },
-                                new
-                                {
-                                    FreelancerId = 2,
-                                    City = "City2",
-                                    Country = "Country2",
-                                    Street = "Street2"
-                                },
-                                new
-                                {
-                                    FreelancerId = 3,
-                                    City = "City3",
-                                    Country = "Country3",
-                                    Street = "Street3"
-                                },
-                                new
-                                {
-                                    FreelancerId = 4,
-                                    City = "City4",
-                                    Country = "Country4",
-                                    Street = "Street4"
-                                },
-                                new
-                                {
-                                    FreelancerId = 5,
-                                    City = "City5",
-                                    Country = "Country5",
-                                    Street = "Street5"
-                                },
-                                new
-                                {
-                                    FreelancerId = 6,
-                                    City = "City6",
-                                    Country = "Country6",
-                                    Street = "Street6"
-                                });
-                        });
-
-                    b.Navigation("Address")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("EfcCodeFirst.Entites.FreelancerSkill", b =>
                 {
                     b.HasOne("EfcCodeFirst.Entites.Freelancer", "Freelancer")
@@ -1007,6 +911,120 @@ namespace EfcCodeFirst.Migrations
                     b.Navigation("Freelancer");
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("EfcCodeFirst.Entites.AgencyFreelancer", b =>
+                {
+                    b.OwnsOne("EfcCodeFirst.Entites.ValueObjects.Address", "Address", b1 =>
+                        {
+                            b1.Property<int>("AgencyFreelancerId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("VARCHAR");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("VARCHAR");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("VARCHAR");
+
+                            b1.HasKey("AgencyFreelancerId");
+
+                            b1.ToTable("AgencyFreelancers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AgencyFreelancerId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    AgencyFreelancerId = 2,
+                                    City = "City2",
+                                    Country = "Country2",
+                                    Street = "Street2"
+                                },
+                                new
+                                {
+                                    AgencyFreelancerId = 3,
+                                    City = "City3",
+                                    Country = "Country3",
+                                    Street = "Street3"
+                                },
+                                new
+                                {
+                                    AgencyFreelancerId = 5,
+                                    City = "City5",
+                                    Country = "Country5",
+                                    Street = "Street5"
+                                });
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EfcCodeFirst.Entites.IndependentFreelancer", b =>
+                {
+                    b.OwnsOne("EfcCodeFirst.Entites.ValueObjects.Address", "Address", b1 =>
+                        {
+                            b1.Property<int>("IndependentFreelancerId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("VARCHAR");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("VARCHAR");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("VARCHAR");
+
+                            b1.HasKey("IndependentFreelancerId");
+
+                            b1.ToTable("IndpendentFreelancers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("IndependentFreelancerId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    IndependentFreelancerId = 1,
+                                    City = "City1",
+                                    Country = "Country1",
+                                    Street = "Street1"
+                                },
+                                new
+                                {
+                                    IndependentFreelancerId = 4,
+                                    City = "City4",
+                                    Country = "Country4",
+                                    Street = "Street4"
+                                },
+                                new
+                                {
+                                    IndependentFreelancerId = 6,
+                                    City = "City6",
+                                    Country = "Country6",
+                                    Street = "Street6"
+                                });
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EfcCodeFirst.Entites.Client", b =>

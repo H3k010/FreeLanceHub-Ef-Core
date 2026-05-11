@@ -9,10 +9,25 @@ public class IndependentFreelancerConfiguration : IEntityTypeConfiguration<Indep
 {
     public void Configure(EntityTypeBuilder<IndependentFreelancer> builder)
     {
+        builder.ToTable("IndpendentFreelancers");
+
         builder.Property(i => i.Availability)
                .HasConversion<string>()
                .HasColumnType("VARCHAR")
                .HasMaxLength(30);
+
+        builder.OwnsOne(f => f.Address, a =>
+           {
+               a.Property(x => x.Street).HasColumnType("VARCHAR").HasMaxLength(50);
+               a.Property(x => x.City).HasColumnType("VARCHAR").HasMaxLength(50);
+               a.Property(x => x.Country).HasColumnType("VARCHAR").HasMaxLength(50);
+
+               a.HasData(
+                   new { IndependentFreelancerId = 1, Street = "Street1", City = "City1", Country = "Country1" },
+                   new { IndependentFreelancerId = 4, Street = "Street4", City = "City4", Country = "Country4" },
+                   new { IndependentFreelancerId = 6, Street = "Street6", City = "City6", Country = "Country6" }
+               );
+           });
 
         builder.HasData(LoadIndpendentFreelancers());
     }
@@ -25,7 +40,6 @@ public class IndependentFreelancerConfiguration : IEntityTypeConfiguration<Indep
             {
                 Id = 1,
                 Name = "Name1",
-                Type = "Type1",
                 HourlyRate = 50,
                 Availability = Availability.Full_Time,
             },
@@ -33,7 +47,6 @@ public class IndependentFreelancerConfiguration : IEntityTypeConfiguration<Indep
             {
                 Id = 4,
                 Name = "Name4",
-                Type = "Type4",
                 HourlyRate = 60,
                 Availability = Availability.Part_Time,
             },
@@ -41,7 +54,6 @@ public class IndependentFreelancerConfiguration : IEntityTypeConfiguration<Indep
             {
                 Id = 6,
                 Name = "Name6",
-                Type = "Type6",
                 HourlyRate = 70,
                 Availability = Availability.Full_Time,
             }
