@@ -1,5 +1,5 @@
 # FreelanceHub project
-## A basic demonstration of creating a Freelance Hub project using Entity Framework Core.
+## A basic demonstration of creating a Freelance Hub project using Entity Framework Core Code-First approach and migrating to MySQL.
 ### Generated SQL script to create the database in MySQL:
 
 #### Table Clients:
